@@ -1,0 +1,30 @@
+//https://leetcode.com/problems/maximum-difference-between-node-and-ancestor/
+
+// Definition for a binary tree node.
+  struct TreeNode {
+      int val;
+      TreeNode *left;
+      TreeNode *right;
+      TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+  };
+ 
+class Solution {
+public:
+     int maxAncestorDiff(TreeNode* root) {
+         if (!(root)) return 0;
+         int mx = INT_MIN;
+         int mi = INT_MAX;
+         int diff = INT_MIN;
+         dfs(root, mx, mi,diff);
+         return diff;
+    }
+    void dfs(TreeNode* root, int mx, int mi, int& diff){
+        if(!(root)) return;
+        mx = max(mx,(*root).val);
+        mi = min(mi,(*root).val);
+        
+        diff = max(diff, mx-mi);
+        dfs((*root).left, mx, mi, diff);
+        dfs((*root).right, mx, mi, diff);
+    }
+};
