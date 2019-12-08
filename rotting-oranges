@@ -1,0 +1,45 @@
+//https://leetcode.com/problems/rotting-oranges/
+
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        vector<int> dr = {-1,0,1,0};
+        vector<int> dc = {0,-1,0,1};
+        
+        int R = grid.size(), C = grid[0].size();
+        queue<int> que;
+        map<int,int> depth;
+        
+        for (int i = 0; i < R ; i++)
+            for (int j = 0; j < C; j++)
+                if (grid[i][j] == 2)
+                {
+                    int code  = i * C + j;
+                    que.push(code);
+                    depth[code] = 0;
+                }
+        int ans = 0;
+        while (!que.empty())
+        {
+            int code = que.front(); que.pop();
+            int r = code / C, c = code % C;
+            for (int i = 0; i < 4; i++)
+            {
+                int nr = r + dr[i];
+                int nc = c + dc[i];
+                if (0 <= nr && nr < R && 0 <= nc && nc < C && grid[nr][nc] == 1) {
+                    grid[nr][nc] = 2;
+                    int ncode = nr * C + nc;
+                    que.push(ncode);
+                    depth[ncode]= depth[code] + 1;
+                    ans = depth[ncode];
+                }
+            }
+        }
+        for (auto row : grid)
+            for (int v : row)
+                if (v==1)
+                    return -1;
+        return ans;
+    }
+};
