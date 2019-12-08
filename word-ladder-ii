@@ -1,0 +1,47 @@
+//https://leetcode.com/problems/word-ladder-ii/
+
+class Solution {
+public:
+    vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList) {
+       unordered_set<string> dict( wordList.begin(), wordList.end() );
+            dict.erase(beginWord);
+         vector<vector<string>> result;
+            queue<vector<string>> q;
+           
+            q.push({beginWord});
+            bool fl = false;
+            while(!q.empty()) {
+                int n = q.size();
+                unordered_set<string> next;
+
+                for( int i = 0 ; i < n ; ++i ) {
+                    vector<string> level = q.front();
+                    q.pop();
+                    string cur = level.back();
+                    if( cur == endWord ) {
+                        fl = true;
+                        result.push_back(level);
+                    } else {
+                        for( int i = 0 ; i < cur.size() ; ++i ) {
+                            char orig = cur[ i ];
+                            for( char ch = 'a' ; ch <= 'z' ; ++ch ) {
+                                if( ch == orig ) continue;
+                                cur[ i ] = ch;
+                                if( dict.find(cur) != dict.end() ) {
+                                    next.insert(cur);
+                                    q.push(level);
+                                    q.back().push_back(cur);
+                                }
+                            }
+                            cur[i] = orig;
+                        }
+                    }
+                }
+                if (fl) break;
+                for( auto i : next ) {
+                    dict.erase(i);
+                }
+            }
+            return result;  
+    }
+};
