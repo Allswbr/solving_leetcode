@@ -1,0 +1,32 @@
+//https://leetcode.com/problems/employee-importance/
+
+// Employee info
+class Employee {
+public:
+    // It's the unique ID of each node.
+    // unique id of this employee
+    int id;
+    // the importance value of this employee
+    int importance;
+    // the id of direct subordinates
+    vector<int> subordinates;
+};
+
+class Solution {
+    private:
+    map<int, Employee*> emap;
+public:
+    int getImportance(vector<Employee*> employees, int id) {
+        for (Employee* e : employees) emap[e->id] = e;
+        return dfs(id);
+    }
+    private:
+    int dfs(int id)
+    {
+        Employee* employee = emap[id];
+        int ans = employee->importance;
+        for (int subid : employee->subordinates)
+            ans += dfs(subid);
+        return ans;
+    }
+};
