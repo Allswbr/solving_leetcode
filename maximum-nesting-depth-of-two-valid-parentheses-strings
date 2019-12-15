@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/maximum-nesting-depth-of-two-valid-parentheses-strings/
+
+
+class Solution {
+public:
+    vector<int> maxDepthAfterSplit(string seq) {
+         
+        vector<int> res;
+        int d = 0;
+        
+        for(auto i:seq){
+            if(i == '(')
+           res.push_back(++d%2);
+            else if(i == ')')
+               res.push_back(d--%2);
+        } 
+        
+        return res;
+    }
+};
