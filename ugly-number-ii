@@ -1,0 +1,72 @@
+// https://leetcode.com/problems/ugly-number-ii/
+
+class Solution {
+public:
+    
+     void siftDown(vector<long long>& heap, int i){
+        while (2*i+1<heap.size()){
+             int left=2*i+1;
+             int right=2*i+2;
+                int j=left;
+        if (right<heap.size() && heap[right]<heap[j]){
+            j=right;
+            }
+        if (heap[i]<heap[j]) break;
+        swap(heap[i],heap[j]);
+        i=j;
+        }
+    }
+    
+    int extractMax(vector<long long>& heap){
+        int max=heap[0];
+        swap(heap[0], heap[heap.size()-1]);
+        heap.erase(heap.begin()+heap.size()-1);
+        siftDown(heap,0);
+        return max;
+    }
+    void SiftUp(vector<long long>& heap, size_t i){
+    int par=(i-1)/2;
+        while (i>0 && heap[par]> heap[i]){
+        swap(heap[i], heap[par]);
+            i=par;
+            par=(i-1)/2;
+        }
+        
+    }
+    
+    void Insert(vector<long long>& heap, long long x){
+        heap.push_back(x);
+        SiftUp(heap, heap.size()-1);
+    }
+    
+int extractMin(vector<long long> & heap){
+    int min=heap[0];
+    swap(heap[0], heap[heap.size()-1]);
+    heap.erase(heap.begin()+heap.size()-1);
+    siftDown(heap,0);
+    return min;
+}
+    
+    
+    int nthUglyNumber(int n) {
+        vector<long long> nums={1};
+        unordered_set<long long> s;
+        s.insert(1);
+       vector<long long> primes={2,3,5};
+        long long min;
+        while(n>0){
+        min=extractMin(nums);
+            for (int a:primes){
+            if (s.find(min*a)==s.end()){
+            Insert(nums, min*a);
+                s.insert(min*a);
+            
+            }
+            }
+            n--;
+        
+        
+        }
+        return min;
+    }
+};
