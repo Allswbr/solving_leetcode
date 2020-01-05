@@ -9,7 +9,7 @@
       TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  };
  
-map<int,int> mark;
+
 class Solution {
 public:
     bool isValidBST(TreeNode* root, long mi = LONG_MIN, long ma = LONG_MAX) {
